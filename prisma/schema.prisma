@@ -14,19 +14,20 @@ datasource db {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
+  id             Int                           @id @default(autoincrement())
   // id          String          @id @default(uuid())
   name           String
   age            Int
-  email          String?         @unique
+  email          String?                       @unique
   largeNumber    BigInt
-  isAdmin        Boolean
+  // isAdmin        Boolean
+  role           Role                          @default(BASIC)
   preferences    Json
   blob           Bytes
-  blobs          Unsupported("")
+  blobs          Unsupported("DECIMAL(10, 8)")
   // posts       Post[]
-  writtenPosts   Post[]          @relation("WrittenPosts")
-  favoritePosts  Post[]          @relation("FavoritePosts")
+  writtenPosts   Post[]                        @relation("WrittenPosts")
+  favoritePosts  Post[]                        @relation("FavoritePosts")
   userPreference UserPreference?
 
   @@unique([name, age])
@@ -61,4 +62,9 @@ model Category {
   id    Int    @id @default(autoincrement())
   name  String @unique
   posts Post[]
+}
+
+enum Role {
+  BASIC
+  ADMIN
 }
