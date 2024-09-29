@@ -17,7 +17,8 @@ model User {
   id             Int             @id @default(autoincrement())
   // id          String          @id @default(uuid())
   name           String
-  email          String?
+  age            Int
+  email          String?         @unique
   largeNumber    BigInt
   isAdmin        Boolean
   preferences    Json
@@ -27,6 +28,9 @@ model User {
   writtenPosts   Post[]          @relation("WrittenPosts")
   favoritePosts  Post[]          @relation("FavoritePosts")
   userPreference UserPreference?
+
+  @@unique([name, age])
+  @@index([email])
 }
 
 model UserPreference {
@@ -38,19 +42,23 @@ model UserPreference {
 
 model Post {
   id            Int        @id @default(autoincrement())
-  rating        Float
-  createdAt     DateTime
-  updatedAt     DateTime
+  title         String
+  averageRating Float
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   author        User       @relation("WrittenPosts", fields: [authorId], references: [id])
   authorId      Int
   // authorId  String
   favoritedBy   User?      @relation("FavoritePosts", fields: [favoritedById], references: [id])
   favoritedById Int?
   categories    Category[]
+
+  // @@id(id)
+  // @@id([title, authorId])
 }
 
 model Category {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   posts Post[]
 }
