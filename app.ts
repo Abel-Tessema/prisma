@@ -3,27 +3,15 @@ import {PrismaClient} from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  // const preference = await prisma.userPreference.create({
-  //   data: {emailUpdates: true}
+  // const user = await prisma.user.delete({
+  //   where: {email: 'abelxotessema@gmail.com'}
   // });
   
-  // const user = await prisma.user.update({
-  //   where: {email: 'belajash1@gmail.com'},
-  //   data: {
-  //     // userPreference: {connect: {id: 2}}
-  //     userPreference: {disconnect: true},
-  //   }
+  // const users = await prisma.user.deleteMany({
+  //   where: {age: {gt: 20}}
   // });
   
-  // const user = await prisma.user.create({
-  //   data: {
-  //     // name, age, email
-  //     userPreference: {connect: {id: 1}},
-  //   }
-  // });
-  
-  // console.log(preference);
-  // console.log(user);
+  // const users = await prisma.user.deleteMany();
 }
 
 main()
