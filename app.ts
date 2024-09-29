@@ -1,40 +1,31 @@
 import {PrismaClient} from "@prisma/client";
 
-// const prisma = new PrismaClient({log: ['query']});
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.deleteMany();
-  // const user = await prisma.user.create({
-  //   data: {
-  //     name: "Abel Tessema",
-  //     age: 22,
-  //     email: "abelxotessema@gmail.com",
-  //     userPreference: {create: {emailUpdates: true}}
-  //   },
-  //   // include: {userPreference: true},
-  //   select: {name: true, userPreference: {select: {emailUpdates: true}}}
+  // const user = await prisma.user.findUnique({
+    // where: {email: 'belajash@gmail.com'}
+    // We can optionally include or select specific fields here.
+    // where: {name_age: {name: 'Bela Jash', age: 22}} // name_age is a composite unique key.
+    // where: {name_age: {name: 'Bela Jash', age: 23}}
+    // where: {name: 'Bela Jash'} // Not allowed because name isn't unique.
   // });
   
-  const users = await prisma.user.createMany({
-    data: [
-      {
-        name: "Abel Tessema",
-        age: 22,
-        email: "abelxotessema@gmail.com",
-        // userPreference: {create: {emailUpdates: true}} // You can't do nested entries for performance reasons with createMany()
-      },
-      {
-        name: "Bela Jash",
-        age: 22,
-        email: "belajash@gmail.com",
-      },
-    ],
-    skipDuplicates: true,
+  // const user = await prisma.user.findFirst({
+  //   where: {name: 'Bela Jash'}
+  // });
+  
+  const user = await prisma.user.findMany({
+    where: {name: 'Bela Jash'},
+    // distinct: 'name'
+    distinct: ['name', 'age'],
+    take: 2,
+    skip: 1,
+    // orderBy: {age: 'asc'},
+    orderBy: [{age: 'asc'}, {name: 'desc'}],
   });
   
-  // console.log(user);
-  console.log(users); // users only returns count, most likely for performance reasons.
+  console.log(user);
 }
 
 main()
